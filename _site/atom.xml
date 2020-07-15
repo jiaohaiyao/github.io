@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-07-15T21:38:52+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">jiaohaiyao</title><subtitle>jiaohaiyao's blog</subtitle><author><name>焦海瑶</name></author><entry><title type="html">antd 动态合并单元格</title><link href="http://localhost:4000/articles/2020-07/%E5%8A%A8%E6%80%81%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC" rel="alternate" type="text/html" title="antd 动态合并单元格" /><published>2020-07-08T00:00:00+08:00</published><updated>2020-07-08T00:00:00+08:00</updated><id>http://localhost:4000/articles/2020-07/%E5%8A%A8%E6%80%81%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC</id><content type="html" xml:base="http://localhost:4000/articles/2020-07/%E5%8A%A8%E6%80%81%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC">&lt;!-- more --&gt;
+
+&lt;h3 id=&quot;示例数据&quot;&gt;示例数据：&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const listData = [
+    {
+        'name':'超时错误',
+        'type': 'net',
+        'pv':'20%',
+        'uv':'20000'
+    },
+    {
+        'name':'超时错误',
+        'type': 'net',
+        'pv':'10%',
+        'uv':'10000'
+    },
+    {
+        'name':'xx错误',
+        'type': '4g',
+        'pv':'10%',
+        'uv':'10000'
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;示例结果&quot;&gt;示例结果&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/table.png&quot; alt=&quot;Image text&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;error_type 是需要合并的字段,将具有相同name值的元素合并为一个数组,然后将数组展开为符合antd Table渲染条件的新数组
+解决方案: 合并处理data&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let formateData = (data, attr) =&amp;gt; {
+    return data.reduce((result, item) =&amp;gt; {
+        if (result.indexOf(item[attr]) &amp;lt; 0) {
+            result.push(item[attr])
+        }
+        return result
+    }, []).reduce((result, attr) =&amp;gt; {
+        //将name相同的数据作为新数组取出，并在其内部添加新字段**rowSpan**
+        const children = data.filter(item =&amp;gt; item.name === name);
+        result = result.concat(
+            children.map((item, index) =&amp;gt; ({
+                ...item,
+                rowSpan: index === 0 ? children.length : 0
+                //将第一行数据添加rowSpan字段
+            }))
+        )
+        return result;
+    }, [])
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>焦海瑶</name></author><summary type="html"></summary></entry></feed>
